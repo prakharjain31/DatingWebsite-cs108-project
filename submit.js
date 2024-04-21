@@ -4,9 +4,11 @@ const express = require("express");
 const app = express()
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser")
 const exp = require("constants");
 const fs = require('fs');
 
+app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(express.static('public')) // whenever to get html files it'll look at public folder
 app.use(bodyParser.urlencoded({
@@ -36,6 +38,13 @@ connect.then(() => {
 .catch(() => {
     console.log("Database cannot be Connected");
 })
+
+function intersection(array1, array2) {
+  // Create a Set from the first array
+  const set1 = new Set(array1);
+  // Create a Set containing elements common to both arrays
+  return array2.filter(item => set1.has(item));
+}
 
 async function readData() {
     // Read the local JSON file
@@ -83,8 +92,9 @@ app.post("/login" , async (req,res)=> {
     var passwor = req.body.password
     var query = {username:usernam , password:passwor}
     var d = await login_db.collection("users").findOne(query)
-    console.log(d)
+    // console.log(d)
     if(d != null) {
+        res.cookie("username" , usernam)
         return res.redirect("home.html")
     }
     else {
@@ -171,5 +181,36 @@ app.post("/login_with_question", async (req,res)=> {
     else {
         res.redirect("home.html")
     }
+
+})
+
+app.get('/get-cookie', (req, res) => {
+    // Retrieve the value of the 'username' cookie
+    const usernam = req.cookies.username;
+    res.send(usernam);
+  })
+
+app.get('/find_match' , async (req,res)=> {
+    usernam = req.query.username
+    // console.log(usernam)
+    var user = await users_db.collection("users").findOne({username:usernam})
+    var allData = await users_db.collection("users").find({}).toArray()
+    // console.log(user)
+    var match_usernam = "blabla"
+    var interest_hobby_match = 0
+    allData.forEach(doc => {
+        // console.log(doc)
+        if((((intersection(user.Hobbies , doc.Hobbies).length) + ((intersection(user.Interests , doc.Interests).length))) > interest_hobby_match) && (user.Gender != doc.Gender) && (user.username != doc.username)) {
+            // console.log(doc)
+            interest_hobby_match = ((intersection(user.Hobbies , doc.Hobbies).length) + ((intersection(user.Interests , doc.Interests).length)))
+            match_usernam = doc.username
+            // console.log(match_usernam)
+        }
+    });
+    // console.log(match_usernam)
+    var match_user = await users_db.collection("users").findOne({username:match_usernam})
+    // console.log(match_user)
+    return res.json(match_user)
+
 
 })

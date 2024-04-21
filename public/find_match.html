@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HeartSync - Get your right match</title>
+    <script>
+        var cookie = document.cookie
+        usernam = cookie.trim().split("=")[1]
+        // alert(usernam)
+        fetch('http://localhost:3000/find_match?username=' + decodeURIComponent(usernam))
+            .then(response => response.json())
+            .then(data => {
+                // Display the received data in the HTML page
+                document.getElementById("name").innerHTML = data.Name
+                
+            })
+            .catch(error => console.error('Error:', error));
+
+    </script>
+    <style>
+        .match {
+            position: relative;
+            padding: 60px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid #ffffff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            border-right: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="match">
+        <img id="match_img" src="../images/sunset_mountains.jpg"><br>
+        <p id="name">NAME</p>
+        <p>ROLL No.</p>
+
+
+
+    </div>
+</body>
+
+</html>
