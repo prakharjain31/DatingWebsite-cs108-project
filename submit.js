@@ -145,3 +145,31 @@ app.post("/signup" , (req,res)=> {
     }
 
 })
+
+app.get("/show_question" , async (req,res)=> {
+    usernam = req.query.username
+    console.log(usernam)
+    var doc = await login_db.collection("users").findOne({username:usernam})
+    if(doc == null) {
+        console.log("User doesn't exist")
+        return res.redirect("signup.html")
+    }
+    else {
+        return res.json(doc)
+    }
+})
+
+app.post("/login_with_question", async (req,res)=> {
+    sa = req.body.secret_answer
+    
+    console.log(sa)
+    var doc = await login_db.collection("users").findOne({secret_answer:sa})
+    if(doc == null) {
+        console.log("Wrong Answer")
+        return res.redirect("signup.html")
+    }
+    else {
+        res.redirect("home.html")
+    }
+
+})
