@@ -5,6 +5,7 @@ const app = express()
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const exp = require("constants");
+const fs = require('fs');
 
 app.use(bodyParser.json())
 app.use(express.static('public')) // whenever to get html files it'll look at public folder
@@ -36,10 +37,60 @@ connect.then(() => {
     console.log("Database cannot be Connected");
 })
 
-app.post("/login" , (req,res)=> {
-    var username = req.body.username
-    var password = req.body.password
-    return res.redirect("home.html")
+async function readData() {
+    // Read the local JSON file
+    const login_jsonData = fs.readFileSync('login.json', 'utf-8');
+    const user_jsonData = fs.readFileSync('students.json', 'utf-8');
+
+    // Parse the JSON data and insert it
+    const jsonparseddata = JSON.parse(login_jsonData);
+    const jsonparseddata2 = JSON.parse(user_jsonData);
+    var q = {}
+    var documents = await login_db.collection("users").findOne(q)
+    console.log(documents)
+    if(documents == null){
+        try {
+            login_db.collection("users").insertMany(jsonparseddata)
+            console.log("login data entered goodly")
+        }
+        catch {
+            console.log("login couldn't enter data")
+        }
+    }
+    else {
+        console.log("Login db has og data")
+    }
+    var documents = await users_db.collection("users").findOne(q)
+    console.log(documents)
+    if(documents == null){
+        try {
+            users_db.collection("users").insertMany(jsonparseddata2)
+            console.log("user data entered goodly")
+        }
+        catch {
+            console.log("user data couldn't enter ")
+        }
+    }
+    else {
+        console.log("user db has og data")
+    }
+}
+
+readData()
+
+app.post("/login" , async (req,res)=> {
+    var usernam = req.body.username
+    var passwor = req.body.password
+    var query = {username:usernam , password:passwor}
+    var d = await login_db.collection("users").findOne(query)
+    console.log(d)
+    if(d != null) {
+        return res.redirect("home.html")
+    }
+    else {
+        console.log("Incorrect Username and Password")
+        return res.redirect("login.html")
+    }
 })
 
 app.post("/signup" , (req,res)=> {
@@ -47,6 +98,7 @@ app.post("/signup" , (req,res)=> {
     var name = req.body.name
     var year = req.body.year
     var age = req.body.age
+    age = Number(age)
     var gender = req.body.gender
     var interests = req.body.interests
     var hobbies = req.body.hobbies
@@ -56,7 +108,11 @@ app.post("/signup" , (req,res)=> {
     var password = req.body.password
     var secret_question = req.body.secret_question
     var secret_answer = req.body.secret_answer
-
+    if(roll == "" || name == "" || year == "" || age == "" || gender == null || interests == null || hobbies == null || email == "" || username == "" || password == "" || secret_answer == "" || secret_question == "") {
+        console.log("Enter all details to proceed")
+        return res.redirect('signup.html')
+    }
+    else {
     var student_data = {
         "username": username,
         "IITB Roll Number": roll,
@@ -79,26 +135,13 @@ app.post("/signup" , (req,res)=> {
     )
     users_db.collection("users").insertOne(student_data , (err,collection)=> {
         if (err) throw err
-        console.log("Data inserted successfully")
+        console.log("User Data inserted successfully")
     })
-
+    login_db.collection("users").insertOne(login_data , (err,collection)=> {
+        if (err) throw err
+        console.log("Login Data inserted successfully")
+    })
     return res.redirect('login.html')
-})
-// var MongoClient = require('mongodb').MongoClient;
-// var url = "mongodb://localhost:27017/mydb";
+    }
 
-// MongoClient.connect(url, function(err, db) {
-//     if (err) throw err;
-//     console.log("Database created!");
-//     var dbo = db.db("mydb");
-//     var myobj = { name: "Company Inc", address: "Highway 37" };
-//     dbo.createCollection("customers", function(err, res) {
-//         if (err) throw err;
-//         console.log("Collection created!");
-//     });
-//     dbo.collection("customers").insertOne(myobj, function(err, res) {
-//         if (err) throw err;
-//         console.log("1 document inserted");
-//         db.close();
-//       });
-// });
+})
