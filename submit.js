@@ -218,6 +218,6 @@ app.get('/find_match' , async (req,res)=> {
 
 app.get('/get_users' , async (req,res)=> {
     var allData = await users_db.collection("users").find({}).toArray()
-    console.log(allData)
+    // console.log(allData)
     return res.json(allData)
 })
