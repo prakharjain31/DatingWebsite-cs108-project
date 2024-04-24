@@ -94,6 +94,7 @@ app.post("/login" , async (req,res)=> {
     var d = await login_db.collection("users").findOne(query)
     // console.log(d)
     if(d != null) {
+        res.clearCookie("username")
         res.cookie("username" , usernam)
         return res.redirect("home.html")
     }
@@ -213,4 +214,10 @@ app.get('/find_match' , async (req,res)=> {
     return res.json(match_user)
 
 
+})
+
+app.get('/get_users' , async (req,res)=> {
+    var allData = await users_db.collection("users").find({}).toArray()
+    console.log(allData)
+    return res.json(allData)
 })

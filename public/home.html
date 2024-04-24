@@ -2,21 +2,31 @@
 <html>
 
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <title>HeartSync</title>
     <style>
         body {
-            margin-top: 1px;
-            margin-left: 0;
-            margin-right: 0;
+            background: url("/images/sunset_mountains.jpg");
+            background-size: cover;
+            height: 100vh;
+            font-family: sans-serif;
             
         }
+
         .group {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             background-color: #8f2c24;
             margin: 0;
             padding: 5px;
             height: 50px;
+        }
+
+        .group i {
+            font-size: 1.5em;
+            color: white;
+            margin: 0 10px 0 10px;
         }
 
         .group a {
@@ -25,19 +35,113 @@
             font-weight: 500;
             text-decoration: none;
         }
+
         .group a:hover {
             text-decoration: underline;
         }
+
+        .logout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .change-data {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
+    <script>
+        fetch('http://localhost:3000/get_users')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                data.forEach(user => {
+                    var div = document.createElement("div")
+                    div.className = "match"
+                    div.style.cssText = "color: #8f2c24;font-family: sans-serif;text-align: center;position: relative;padding: 60px;margin: 10px auto;background: rgba(255, 255, 255, 0.3);backdrop-filter: blur(15px);border: 1px solid #ffffff;border-bottom: 1px solid rgba(255, 255, 255, 0.5);border-right: 1px solid rgba(255, 255, 255, 0.5);width:70%;display: flex;flex-direction: column;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);margin: 10px auto;"
+                    
+                    var img = document.createElement("img")
+                    img.className = "match__img"
+                    if(user.Photo == null) {
+                        img.src = "images/no_profile_image.jpg"
+                    } else {
+                        img.src = user.Photo
+                    }
+                    img.style.cssText = "width: 250px;height: 250px;object-fit: cover;border-radius: 50%;margin: 0 auto 20px auto;display: block;text-align: center;"
+                    
+                    var name = document.createElement("p")
+                    name.className = "match__name"
+                    name.innerHTML = user.Name
+                    name.style.cssText = "margin: 10px;font-weight: bold;font-size: 1.5em;"
+                    
+                    var details = document.createElement("div")
+                    details.className = "match__details"
+                    details.style.cssText = "font-size: 1.2em;"
+
+                    var age = document.createElement("p")
+                    age.innerHTML = "Age: " + user.Age
+                    details.appendChild(age)
+
+                    var year = document.createElement("p")
+                    year.innerHTML = "Year: " + user["Year of Study"]
+                    details.appendChild(year)
+
+                    var interests = document.createElement("p")
+                    interests.innerHTML = "Interests: " + user.Interests
+                    details.appendChild(interests)
+
+                    var hobbies = document.createElement("p")
+                    hobbies.innerHTML = "Hobbies: " + user.Hobbies
+                    details.appendChild(hobbies)
+                    
+                    var divemail = document.createElement("div")
+                    divemail.className = "match__email"
+                    divemail.style.cssText = "display: flex;justify-content: center;align-items: center;font-size: 0.9em;"
+                    
+                    var icon = document.createElement("i")
+                    icon.className = "material-symbols-outlined"
+                    icon.innerHTML = "mail"
+                    icon.style.cssText = "font-size: 1.5em;margin: 0 10px 0 10px;"
+
+                    var email = document.createElement("a")
+                    email.href = "mailto:" + user.Email
+                    email.innerHTML = "Contact"
+                    
+                    divemail.appendChild(icon)
+                    divemail.appendChild(email)
+                    details.appendChild(divemail)
+                    div.appendChild(img)
+                    div.appendChild(name)
+                    div.appendChild(details)
+                   
+                    
+                    document.querySelector(".users_list").appendChild(div)
+                })
+            })
+            .catch(error => console.error('Error:', error));
+
+    </script>
 </head>
 
 <body padding="0" marg>
     <div class="group">
-        <a href="login.html">LOGOUT</a>
+        <div class="logout">
+            <i class="material-symbols-outlined" id="logout_icon">logout</i>
+            <a href="login.html">LOGOUT</a>
+        </div>
         <a href="find_match.html">FIND YOUR MATCH</a>
-        <a href="signup.html">Change your Data</a>
+        <div class="change-data">
+            <i class="material-symbols-outlined">change_circle</i>
+            <a href="signup.html">CHANGE YOUR DATA</a>
+        </div>
     </div>
-    
+    <div class="users_list">
+
+    </div>
+
+
 </body>
 
 </html>
