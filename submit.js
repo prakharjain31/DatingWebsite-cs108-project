@@ -200,7 +200,7 @@ app.get('/find_match' , async (req,res)=> {
     var interest_hobby_match = 0
     allData.forEach(doc => {
         // console.log(doc)
-        if((((intersection(user.Hobbies , doc.Hobbies).length) + ((intersection(user.Interests , doc.Interests).length))) > interest_hobby_match) && (user.Gender != doc.Gender) && (user.username != doc.username)) {
+        if((((intersection(user.Hobbies , doc.Hobbies).length) + ((intersection(user.Interests , doc.Interests).length))) >= interest_hobby_match) && (user.Gender != doc.Gender) && (user.username != doc.username)) {
             // console.log(doc)
             interest_hobby_match = ((intersection(user.Hobbies , doc.Hobbies).length) + ((intersection(user.Interests , doc.Interests).length)))
             match_usernam = doc.username

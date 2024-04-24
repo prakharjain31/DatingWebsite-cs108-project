@@ -2,8 +2,10 @@
 <html>
 
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <title>HeartSync - Get your right match</title>
     <script>
+        // Make a GET request to the server
         var cookie = document.cookie
         usernam = cookie.trim().split("=")[1]
         // alert(usernam)
@@ -11,35 +13,90 @@
             .then(response => response.json())
             .then(data => {
                 // Display the received data in the HTML page
-                document.getElementById("name").innerHTML = data.Name
+                document.querySelector(".match__name").innerHTML += data.Name
+                document.querySelector(".match__roll").innerHTML += data["IITB Roll Number"]
+                document.querySelector(".match__year").innerHTML += data["Year of Study"]
+                document.querySelector(".match__age").innerHTML += data.Age
+                document.querySelector(".match__interests").innerHTML += data.Interests
+                document.querySelector(".match__hobbies").innerHTML += data.Hobbies
+                var mail = document.querySelector(".email_link")
+                mail.href = "mailto:" + data.Email
+                var link = data.Photo
+                var img = document.querySelector(".match__img")
+                // alert(img.src)
+                img.src = link
+                // alert(img.src)
                 
+
+
             })
             .catch(error => console.error('Error:', error));
 
     </script>
     <style>
         .match {
+            font-family: sans-serif;
+            text-align: center;
             position: relative;
             padding: 60px;
+            margin: 10px auto;
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(15px);
             border: 1px solid #ffffff;
             border-bottom: 1px solid rgba(255, 255, 255, 0.5);
             border-right: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 20px;
+            /* border-radius: 20px; */
             width: 300px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .match__img {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+            display: block;
+            text-align: center;
+        }
+
+        .match__name {
+            margin: 10px;
+            font-weight: bold;
+        }
+        .match__details {
+            font-size: 1.2em;
+            
+        }
+        .match__email {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.9em;
         }
     </style>
 </head>
 
 <body>
     <div class="match">
-        <img id="match_img" src="../images/sunset_mountains.jpg"><br>
-        <p id="name">NAME</p>
-        <p>ROLL No.</p>
+        <img class="match__img" src="/images/sunset_mountains.jpg" alt="Image not Provided"><br>
+        <div class="match__details">
+            <div class="match__name">NAME : </div>
+            <div class="match__roll">Roll no. : </div>
+            <div class="match__year">Year : </div>
+            <div class="match__age">Age : </div>
+            <div class="match__interests">Interests : </div>
+            <div class="match__hobbies">Hobbies : </div>
+            <div class="match__email">
+                <i class="material-symbols-outlined">mail</i>
+                <a class="email_link">Contact</a>
+                
+            </div>
+        </div>
+
+
 
 
 
