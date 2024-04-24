@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser")
 const exp = require("constants");
 const fs = require('fs');
+const multer = require('multer');
+const path = require('path');
 
 app.use(cookieParser())
 app.use(bodyParser.json())
@@ -15,6 +17,7 @@ app.use(bodyParser.urlencoded({
     extended:true
 }))
 
+// Set up the server
 const port = 3000
 app.get("/" , (req,res)=> {
     res.set({
@@ -29,6 +32,19 @@ const connect = mongoose.connect("mongodb://0.0.0.0:27017/");
 login_db = mongoose.connection.useDb("LoginData")
 users_db = mongoose.connection.useDb("UserData")
 
+// Set up multer to store files in the 'photos' directory
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, '/Users/prakharjain/Desktop/DatingWebsite cs108 project/public/photos')
+  },
+  filename: function(req, file, cb) {
+    var fileExtensionPatter = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/;
+    var extension = file.originalname.match(fileExtensionPatter)[0];
+    cb(null, file.fieldname + '-' + Date.now() + extension.toLowerCase());
+  },
+});
+
+var upload = multer({ storage:storage }).single('photo');
 
 
 // Checking whether the database is connected or not
@@ -104,17 +120,17 @@ app.post("/login" , async (req,res)=> {
     }
 })
 
-app.post("/signup" , (req,res)=> {
+app.post("/signup" ,upload, (req,res)=> {
     var roll = req.body.roll
     var name = req.body.name
     var year = req.body.year
     var age = req.body.age
     age = Number(age)
     var gender = req.body.gender
-    var interests = req.body.interests
-    var hobbies = req.body.hobbies
+    var interests = [req.body.interests]
+    var hobbies = [req.body.hobbies]
     var email = req.body.email
-    var photo = req.body.photo
+    var photo = "photos/" + req.file.filename
     var username = req.body.username
     var password = req.body.password
     var secret_question = req.body.secret_question

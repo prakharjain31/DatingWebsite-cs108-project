@@ -9,7 +9,7 @@
         <section>
             <img src="images/sunset_mountains.jpg" class="bg">
             <div class="login">
-                <form action="/signup" method="POST">
+                <form action="/signup" method="POST" enctype="multipart/form-data">
                 <h2>Sign Up</h2>
                 <div class="inputbox">
                     <input class="username" name="username" type="text" placeholder="Username">
@@ -49,7 +49,7 @@
                 </div>
                 <div class="inputbox">
                     <h4>PHOTO</h4>
-                    <input class="photo" type="file" placeholder="Photo">
+                    <input class="photo" type="file" placeholder="Photo" name="photo">
                     <!-- <label class="label" for="password">Password</label> -->
                 </div>
                 <div align="center">
