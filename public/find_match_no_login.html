@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login to HeartSync</title>
+        <link rel="stylesheet" href="loginpage_style.css">
+        <script src="submit.js"></script>
+    </head>
+    <body>
+        <section>
+            <img src="images/sunset_mountains.jpg" class="bg">
+            <div class="login">
+                <form action="/find_match_without_login" method="POST">
+                <h2>Find Match</h2>
+                <div align="center">
+                    <h4>GENDER</h4>
+                    <input type="radio" id="male" name="gender" value="Male">
+                    <label for="male">MALE</label>
+                    <input type="radio" id="female" name="gender" value="Female">
+                    <label for="female">FEMALE</label>
+                    <input type="radio" id="others" name="gender" value="Others">
+                    <label for="others">OTHERS</label>
+                    <!-- <label class="label" for="password">Password</label> -->
+                </div>
+                <div align="center">
+                    <h4>INTERESTS</h4>
+                    <input type="checkbox" id="movies" name="interests" value="Movies">
+                    <label for="movies">Movies</label>
+                    <input type="checkbox" id="traveling" name="interests" value="Traveling">
+                    <label for="traveling">Travelling</label>
+                    <input type="checkbox" id="music" name="interests" value="Music">
+                    <label for="music">Music</label>
+                    <input type="checkbox" id="literature" name="interests" value="Literature">
+                    <label for="literature">Literature</label>
+                    <input type="checkbox" id="technology" name="interests" value="Technology">
+                    <label for="technology">Technology</label>
+                    <input type="checkbox" id="fashion" name="interests" value="Fashion">
+                    <label for="fashion">Fashion</label>
+                    <input type="checkbox" id="art" name="interests" value="Art">
+                    <label for="art">Art</label>
+                    <input type="checkbox" id="sports" name="interests" value="Sports">
+                    <label for="sports">Sports</label>
+                </div>
+                <div align="center">
+                    <h4>HOBBIES</h4>
+                    <input type="checkbox" id="coding" name="hobbies" value="Coding">
+                    <label for="coding">Coding</label>
+                    <input type="checkbox" id="reading" name="hobbies" value="Reading">
+                    <label for="reading">Reading</label>
+                    <input type="checkbox" id="cooking" name="hobbies" value="Cooking">
+                    <label for="cooking">Cooking</label>
+                    <input type="checkbox" id="gardening" name="hobbies" value="Gardening">
+                    <label for="gardening">Gardening</label>
+                    <input type="checkbox" id="painting" name="hobbies" value="Painting">
+                    <label for="painting">Painting</label>
+                    <input type="checkbox" id="watching" name="hobbies" value="Watching YouTube/Instagram">
+                    <label for="watching">Watching Youtube/Instagram</label>
+                </div>
+                <div class="inputbox">
+                    <input id="submit" type="submit" value="FIND">
+                </div>
+                </form>
+            </div>
+        </section>
+    </body>
+</html>

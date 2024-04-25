@@ -7,31 +7,55 @@
     <script>
         // Make a GET request to the server
         var cookie = document.cookie
-        usernam = cookie.trim().split("=")[1]
-        // alert(usernam)
-        fetch('http://localhost:3000/find_match?username=' + decodeURIComponent(usernam))
-            .then(response => response.json())
-            .then(data => {
-                // Display the received data in the HTML page
-                document.querySelector(".match__name").innerHTML += data.Name
-                document.querySelector(".match__roll").innerHTML += data["IITB Roll Number"]
-                document.querySelector(".match__year").innerHTML += data["Year of Study"]
-                document.querySelector(".match__age").innerHTML += data.Age
-                document.querySelector(".match__interests").innerHTML += data.Interests
-                document.querySelector(".match__hobbies").innerHTML += data.Hobbies
-                var mail = document.querySelector(".email_link")
-                mail.href = "mailto:" + data.Email
-                var link = data.Photo
-                var img = document.querySelector(".match__img")
-                // alert(img.src)
-                img.src = link
-                // alert(img.src)
-                
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get("username");
+        if (name != null) { 
+            fetch('http://localhost:3000/get_user_data?username=' + name)
+                .then(response => response.json())
+                .then(data => {
+                    // Display the received data in the HTML page
+                    document.querySelector(".match__name").innerHTML += data.Name
+                    document.querySelector(".match__roll").innerHTML += data["IITB Roll Number"]
+                    document.querySelector(".match__year").innerHTML += data["Year of Study"]
+                    document.querySelector(".match__age").innerHTML += data.Age
+                    document.querySelector(".match__interests").innerHTML += data.Interests
+                    document.querySelector(".match__hobbies").innerHTML += data.Hobbies
+                    var mail = document.querySelector(".email_link")
+                    mail.href = "mailto:" + data.Email
+                    var link = data.Photo
+                    var img = document.querySelector(".match__img")
+                    // alert(img.src)
+                    img.src = link
+                    // alert(img.src)
+                })
+        }
+        else {
+            usernam = cookie.trim().split("=")[1]
+
+            // alert(usernam)
+            fetch('http://localhost:3000/find_match?username=' + decodeURIComponent(usernam))
+                .then(response => response.json())
+                .then(data => {
+                    // Display the received data in the HTML page
+                    document.querySelector(".match__name").innerHTML += data.Name
+                    document.querySelector(".match__roll").innerHTML += data["IITB Roll Number"]
+                    document.querySelector(".match__year").innerHTML += data["Year of Study"]
+                    document.querySelector(".match__age").innerHTML += data.Age
+                    document.querySelector(".match__interests").innerHTML += data.Interests
+                    document.querySelector(".match__hobbies").innerHTML += data.Hobbies
+                    var mail = document.querySelector(".email_link")
+                    mail.href = "mailto:" + data.Email
+                    var link = data.Photo
+                    var img = document.querySelector(".match__img")
+                    // alert(img.src)
+                    img.src = link
+                    // alert(img.src)
 
 
-            })
-            .catch(error => console.error('Error:', error));
 
+                })
+                .catch(error => console.error('Error:', error));
+        }
     </script>
     <style>
         body {
@@ -45,8 +69,9 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            
+
         }
+
         .match {
             font-family: sans-serif;
             text-align: center;
@@ -79,10 +104,12 @@
             margin: 10px;
             font-weight: bold;
         }
+
         .match__details {
             font-size: 1.2em;
-            
+
         }
+
         .match__email {
             display: flex;
             justify-content: center;
@@ -105,7 +132,7 @@
             <div class="match__email">
                 <i class="material-symbols-outlined">mail</i>
                 <a class="email_link">Contact</a>
-                
+
             </div>
         </div>
 

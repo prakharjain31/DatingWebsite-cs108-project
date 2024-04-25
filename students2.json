@@ -1,5 +1,6 @@
 [
     {
+        "username":"raju1990",
         "IITB Roll Number": "2023001",
         "Name": "Aryan Sharma",
         "Year of Study": "3rd",
@@ -11,6 +12,7 @@
         "Photo": "photos/aryan_sharma.png"
     },
     {
+        "username":"meena_sharma",
         "IITB Roll Number": "2023002",
         "Name": "Aditi Singh",
         "Year of Study": "2nd",
@@ -22,6 +24,7 @@
         "Photo": "photos/aditi_singh.png"
     },
     {
+        "username":"amit_delhi",
         "IITB Roll Number": "2023003",
         "Name": "Rahul Patel",
         "Year of Study": "4th",
@@ -33,6 +36,7 @@
         "Photo": "photos/rahul_patel.png"
     },
     {
+        "username":"deepa_mumbai",
         "IITB Roll Number": "2023004",
         "Name": "Sneha Desai",
         "Year of Study": "1st",
@@ -44,6 +48,7 @@
         "Photo": "photos/sneha_desai.png"
     },
     {
+        "username":"arjun_bangalore",
         "IITB Roll Number": "2023005",
         "Name": "Rohan Gupta",
         "Year of Study": "3rd",
@@ -55,6 +60,7 @@
         "Photo": "photos/rohan_gupta.jpg"
     },
     {
+        "username":"nehareddy",
         "IITB Roll Number": "2023006",
         "Name": "Neha Reddy",
         "Year of Study": "4th",
@@ -66,6 +72,7 @@
         "Photo": "photos/neha_reddy.png"
     },
     {
+        "username":"vivek_kumar",
         "IITB Roll Number": "2023007",
         "Name": "Vivek Kumar",
         "Year of Study": "2nd",

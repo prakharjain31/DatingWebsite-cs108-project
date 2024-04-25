@@ -232,6 +232,42 @@ app.get('/find_match' , async (req,res)=> {
 
 })
 
+app.post('/find_match_without_login' , async (req,res)=> {
+    var allData = await users_db.collection("users").find({}).toArray()
+    var match_usernam = ""
+    var interest_hobby_match = 0
+    var gender = req.body.gender
+    var interests = req.body.interests
+    var hobbies = req.body.hobbies
+    if(typeof(interests) == "string") {
+        interests = [req.body.interests]
+    }
+    if(typeof(hobbies) == "string") {
+        hobbies = [req.body.hobbies]
+    }
+    allData.forEach(doc => {
+        // console.log(doc)
+        if((((intersection(hobbies , doc.Hobbies).length) + ((intersection(interests , doc.Interests).length))) >= interest_hobby_match) && (gender != doc.Gender)) {
+            // console.log(doc)
+            interest_hobby_match = ((intersection(hobbies , doc.Hobbies).length) + ((intersection(interests , doc.Interests).length)))
+            match_usernam = doc.username
+            // console.log(match_usernam)
+        }
+    });
+    console.log(match_usernam)
+    // var match_user = await users_db.collection("users").findOne({username:match_usernam})
+    // console.log(match_user)
+    return res.redirect("find_match.html?username=" + match_usernam)
+
+
+})
+
+app.get('/get_user_data' , async (req,res)=> {
+    usernam = req.query.username
+    var user = await users_db.collection("users").findOne({username:usernam})
+    return res.json(user)
+})
+
 app.get('/get_users' , async (req,res)=> {
     var allData = await users_db.collection("users").find({}).toArray()
     // console.log(allData)
