@@ -1,4 +1,4 @@
-console.log(2)
+// console.log(2)
 
 const express = require("express");
 const app = express()
@@ -72,7 +72,7 @@ async function readData() {
     const jsonparseddata2 = JSON.parse(user_jsonData);
     var q = {}
     var documents = await login_db.collection("users").findOne(q)
-    console.log(documents)
+    // console.log(documents)
     if(documents == null){
         try {
             login_db.collection("users").insertMany(jsonparseddata)
@@ -86,7 +86,7 @@ async function readData() {
         console.log("Login db has og data")
     }
     var documents = await users_db.collection("users").findOne(q)
-    console.log(documents)
+    // console.log(documents)
     if(documents == null){
         try {
             users_db.collection("users").insertMany(jsonparseddata2)
