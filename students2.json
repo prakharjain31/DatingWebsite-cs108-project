@@ -9,7 +9,8 @@
         "Interests": ["Traveling", "Music"],
         "Hobbies": ["Reading", "Playing musical instruments"],
         "Email": "aryan@example.com",
-        "Photo": "photos/aryan_sharma.png"
+        "Photo": "photos/aryan_sharma.png",
+        "myLikes":[]
     },
     {
         "username":"meena_sharma",
@@ -21,7 +22,8 @@
         "Interests": ["Movies", "Art"],
         "Hobbies": ["Cooking", "Painting"],
         "Email": "aditi@example.com",
-        "Photo": "photos/aditi_singh.png"
+        "Photo": "photos/aditi_singh.png",
+        "myLikes":[]
     },
     {
         "username":"amit_delhi",
@@ -33,7 +35,8 @@
         "Interests": ["Technology", "Sports"],
         "Hobbies": ["Coding", "Watching YouTube/Instagram"],
         "Email": "rahul@example.com",
-        "Photo": "photos/rahul_patel.png"
+        "Photo": "photos/rahul_patel.png",
+        "myLikes":[]
     },
     {
         "username":"deepa_mumbai",
@@ -45,7 +48,8 @@
         "Interests": ["Literature", "Fashion"],
         "Hobbies": ["Gardening", "Painting"],
         "Email": "sneha@example.com",
-        "Photo": "photos/sneha_desai.png"
+        "Photo": "photos/sneha_desai.png",
+        "myLikes":[]
     },
     {
         "username":"arjun_bangalore",
@@ -57,7 +61,8 @@
         "Interests": ["Movies", "Technology"],
         "Hobbies": ["Playing musical instruments", "Watching YouTube/Instagram"],
         "Email": "rohan@example.com",
-        "Photo": "photos/rohan_gupta.jpg"
+        "Photo": "photos/rohan_gupta.jpg",
+        "myLikes":[]
     },
     {
         "username":"nehareddy",
@@ -69,7 +74,8 @@
         "Interests": ["Art", "Music"],
         "Hobbies": ["Reading", "Painting"],
         "Email": "neha@example.com",
-        "Photo": "photos/neha_reddy.png"
+        "Photo": "photos/neha_reddy.png",
+        "myLikes":[]
     },
     {
         "username":"vivek_kumar",
@@ -81,6 +87,7 @@
         "Interests": ["Sports", "Technology"],
         "Hobbies": ["Coding", "Watching YouTube/Instagram"],
         "Email": "vivek@example.com",
-        "Photo": "photos/vivek_kumar.jpg"
+        "Photo": "photos/vivek_kumar.jpg",
+        "myLikes":[]
     }
 ]

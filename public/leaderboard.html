@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaderboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f1f1f1;
+            background: url("/images/sunset_mountains.jpg");
+            background-size: cover;
+            height: 100vh;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            margin-top: 0;
+            padding-top: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+            color: white;
+        }
+        th {
+            background-color: #8f2c24;
+        }
+        tr:nth-child(even) {
+            background-color: rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>Leaderboard</h1>
+    <table id="leaderboardTable">
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Likes</th>
+        </tr>
+    </table>
+
+    <script>
+        // Fetch the JSON data of all users
+        fetch('/get_users')
+            .then(response => response.json())
+            .then(data => {
+                // Sort the users based on the number of likes in descending order
+                const sortedUsers = data.sort((a, b) => b.myLikes.length - a.myLikes.length);
+
+                // Populate the leaderboard table
+                const leaderboardTable = document.getElementById('leaderboardTable');
+                sortedUsers.forEach((user, index) => {
+                    const row = leaderboardTable.insertRow();
+                    const rankCell = row.insertCell();
+                    const nameCell = row.insertCell();
+                    const likesCell = row.insertCell();
+
+                    rankCell.textContent = index + 1;
+                    nameCell.textContent = user.Name;
+                    likesCell.textContent = user.myLikes.length;
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+</html>
