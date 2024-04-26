@@ -120,7 +120,7 @@ app.post("/login", async (req, res) => {
     }
 })
 
-app.post("/signup", upload, (req, res) => {
+app.post("/signup", upload, async (req, res) => {
     var roll = req.body.roll
     var name = req.body.name
     var year = req.body.year
@@ -146,43 +146,49 @@ app.post("/signup", upload, (req, res) => {
     var password = req.body.password
     var secret_question = req.body.secret_question
     var secret_answer = req.body.secret_answer
-    if (roll == "" || name == "" || year == "" || age == "" || gender == null || interests == null || hobbies == null || email == "" || username == "" || password == "" || secret_answer == "" || secret_question == "") {
-        console.log("Enter all details to proceed")
+    var user = await users_db.collection("users").findOne({ username: username })
+    if (user != null) {
+        console.log("Username already exists")
         return res.redirect('signup.html')
     }
     else {
-        var student_data = {
-            "username": username,
-            "IITB Roll Number": roll,
-            "Name": name,
-            "Year of Study": year,
-            "Age": age,
-            "Gender": gender,
-            "Interests": interests,
-            "Hobbies": hobbies,
-            "Email": email,
-            "Photo": photo,
-            "myLikes": []
+        if (roll == "" || name == "" || year == "" || age == "" || gender == null || interests == null || hobbies == null || email == "" || username == "" || password == "" || secret_answer == "" || secret_question == "") {
+            console.log("Enter all details to proceed")
+            return res.redirect('signup.html')
         }
-        var login_data = (
-            {
+        else {
+            var student_data = {
                 "username": username,
-                "password": password,
-                "secret_question": secret_question,
-                "secret_answer": secret_answer
+                "IITB Roll Number": roll,
+                "Name": name,
+                "Year of Study": year,
+                "Age": age,
+                "Gender": gender,
+                "Interests": interests,
+                "Hobbies": hobbies,
+                "Email": email,
+                "Photo": photo,
+                "myLikes": []
             }
-        )
-        users_db.collection("users").insertOne(student_data, (err, collection) => {
-            if (err) throw err
-            console.log("User Data inserted successfully")
-        })
-        login_db.collection("users").insertOne(login_data, (err, collection) => {
-            if (err) throw err
-            console.log("Login Data inserted successfully")
-        })
-        return res.redirect('login.html')
+            var login_data = (
+                {
+                    "username": username,
+                    "password": password,
+                    "secret_question": secret_question,
+                    "secret_answer": secret_answer
+                }
+            )
+            users_db.collection("users").insertOne(student_data, (err, collection) => {
+                if (err) throw err
+                console.log("User Data inserted successfully")
+            })
+            login_db.collection("users").insertOne(login_data, (err, collection) => {
+                if (err) throw err
+                console.log("Login Data inserted successfully")
+            })
+            return res.redirect('login.html')
+        }
     }
-
 })
 
 app.get("/show_question", async (req, res) => {
