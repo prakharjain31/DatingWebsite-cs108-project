@@ -10,7 +10,7 @@
             background-size: cover;
             height: 100vh;
             font-family: sans-serif;
-            
+
         }
 
         .group {
@@ -51,8 +51,68 @@
             align-items: center;
             justify-content: center;
         }
+
+        .smooth {
+            transition: transform .5s ease-out;
+        }
+
+        .match {
+            --n : 3;
+            --tx : 0px;
+            color: #8f2c24;
+            font-family: sans-serif;
+            text-align: center;
+            position: relative;
+            padding: 60px;
+            margin: 10px auto;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid #ffffff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            border-right: 1px solid rgba(255, 255, 255, 0.5);
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin: 10px auto;
+        }
+
+        .match__img {
+            pointer-events: none;
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+            display: block;
+            text-align: center;
+        }
+        .match__name {
+            pointer-events: none;
+            margin: 10px;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+        .match__details {
+            pointer-events: none;
+            font-size: 1.2em;
+        }
+
+        .match__email {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.9em;
+        }
+        .match__email i {
+            font-size: 1.5em;
+            margin: 0 10px 0 10px;
+        }
     </style>
     <script>
+
+
+
         fetch('http://localhost:3000/get_users')
             .then(response => response.json())
             .then(data => {
@@ -60,25 +120,80 @@
                 data.forEach(user => {
                     var div = document.createElement("div")
                     div.className = "match"
-                    div.style.cssText = "color: #8f2c24;font-family: sans-serif;text-align: center;position: relative;padding: 60px;margin: 10px auto;background: rgba(255, 255, 255, 0.3);backdrop-filter: blur(15px);border: 1px solid #ffffff;border-bottom: 1px solid rgba(255, 255, 255, 0.5);border-right: 1px solid rgba(255, 255, 255, 0.5);width:70%;display: flex;flex-direction: column;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);margin: 10px auto;"
-                    
+                    // div.style.cssText = "color: #8f2c24;font-family: sans-serif;text-align: center;position: relative;padding: 60px;margin: 10px auto;background: rgba(255, 255, 255, 0.3);backdrop-filter: blur(15px);border: 1px solid #ffffff;border-bottom: 1px solid rgba(255, 255, 255, 0.5);border-right: 1px solid rgba(255, 255, 255, 0.5);width:70%;display: flex;flex-direction: column;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);margin: 10px auto;"
+
+
+                    function unify(e) {
+                        return e.changedTouches ? e.changedTouches[0] : e
+                    };
+                    let x0 = null
+                    let locked = false;
+                    function lock(e) {
+                        return x0 = unify(e).clientX
+                        div.classList.toggle('smooth', !(locked = true))
+                    };
+
+                    function drag(e) {
+                        e.preventDefault();
+
+                        if (locked)
+                            div.style.setProperty('--tx', `${Math.round(unify(e).clientX - x0)}px`)
+                    };
+                    let i = 0;
+
+                    function move(e) {
+                        if (locked) {
+                            let dx = unify(e).clientX - x0, s = Math.sign(dx);
+
+                            if ((s < 0 || s > 0) && Math.abs(dx) > 50) {
+                                // div.style.setProperty('--i', i -= s);
+
+
+
+                                // div.style.setProperty('--tx', '0px');
+                                // alert(dx)
+                                // div.classList.toggle('smooth', !(locked = false));
+                                // x0 = null;
+                                // div.style.transform = `translateX(${dx}px)`;
+                            }
+
+
+
+                        }
+                    };
+
+
+                    div.addEventListener('mousedown', lock, false);
+                    div.addEventListener('touchstart', lock, false);
+
+                    div.addEventListener('mouseup', move, false);
+                    div.addEventListener('touchend', move, false);
+                    div.addEventListener('touchmove', e => { e.preventDefault() }, false)
+
+                    div.addEventListener('mousemove', drag, false);
+                    div.addEventListener('touchmove', drag, false);
+
+
+
+
+
                     var img = document.createElement("img")
                     img.className = "match__img"
-                    if(user.Photo == null) {
+                    if (user.Photo == null) {
                         img.src = "images/no_profile_image.jpg"
                     } else {
                         img.src = user.Photo
                     }
-                    img.style.cssText = "width: 250px;height: 250px;object-fit: cover;border-radius: 50%;margin: 0 auto 20px auto;display: block;text-align: center;"
-                    
+                    // img.style.cssText = "pointer-events: none;width: 250px;height: 250px;object-fit: cover;border-radius: 50%;margin: 0 auto 20px auto;display: block;text-align: center;"
+
                     var name = document.createElement("p")
                     name.className = "match__name"
                     name.innerHTML = user.Name
-                    name.style.cssText = "margin: 10px;font-weight: bold;font-size: 1.5em;"
-                    
+                    // name.style.cssText = "pointer-events: none;margin: 10px;font-weight: bold;font-size: 1.5em;"
+
                     var details = document.createElement("div")
                     details.className = "match__details"
-                    details.style.cssText = "font-size: 1.2em;"
+                    // details.style.cssText = "pointer-events: none;font-size: 1.2em;"
 
                     var age = document.createElement("p")
                     age.innerHTML = "Age: " + user.Age
@@ -95,28 +210,28 @@
                     var hobbies = document.createElement("p")
                     hobbies.innerHTML = "Hobbies: " + user.Hobbies
                     details.appendChild(hobbies)
-                    
+
                     var divemail = document.createElement("div")
                     divemail.className = "match__email"
-                    divemail.style.cssText = "display: flex;justify-content: center;align-items: center;font-size: 0.9em;"
-                    
+                    // divemail.style.cssText = "display: flex;justify-content: center;align-items: center;font-size: 0.9em;"
+
                     var icon = document.createElement("i")
                     icon.className = "material-symbols-outlined"
                     icon.innerHTML = "mail"
-                    icon.style.cssText = "font-size: 1.5em;margin: 0 10px 0 10px;"
+                    // icon.style.cssText = "font-size: 1.5em;margin: 0 10px 0 10px;"
 
                     var email = document.createElement("a")
                     email.href = "mailto:" + user.Email
                     email.innerHTML = "Contact"
-                    
+
                     divemail.appendChild(icon)
                     divemail.appendChild(email)
                     details.appendChild(divemail)
                     div.appendChild(img)
                     div.appendChild(name)
                     div.appendChild(details)
-                   
-                    
+
+
                     document.querySelector(".users_list").appendChild(div)
                 })
             })
