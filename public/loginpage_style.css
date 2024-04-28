@@ -10,8 +10,11 @@ section {
     height: 100%;
     overflow-x: hidden;
 }
-h4 {
+h4, p{
     color: var(--text-color);
+}
+p {
+    font-size: 1.5em;
 }
 
 section .bg {
@@ -58,7 +61,7 @@ section .bg {
     position: relative;
 }
 
-.login .inputbox input {
+.login .inputbox input, button {
     all: unset;
     position: relative;
     width: 100%;
@@ -91,11 +94,6 @@ section .bg {
     padding: 0 1px;
     color: var(--text-color);
 } 
-
-/* .login .inputbox input:focus {
-    border-bottom: 1px solid var(--text-color);
-} */
-
 .login .inputbox input:focus ~ label{
     transform: 
         translateY(-230%)
@@ -130,7 +128,20 @@ section .bg {
     transition: 0.55;
 }
 
-.login .inputbox #submit:hover {
+button {
+    position: relative;
+    text-align: center;
+    border: none;
+    outline: none;
+    background: var(--text-color);
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.25em;
+    font-weight: 500;
+    transition: 0.55;
+}
+
+.login .inputbox #submit:hover, button:hover {
     background: #d64c42;
 } 
 .login .group {
