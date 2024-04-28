@@ -143,7 +143,7 @@
                     var email = document.createElement("a")
                     email.href = "mailto:" + user.Email
                     email.innerHTML = "Contact"
-
+try{
                     var likeDiv = document.createElement("div")
                     likeDiv.className = "like"
                     likeDiv.style.marginTop = "20px"
@@ -208,7 +208,7 @@
                     var likeText = document.createElement("p")
                     likeText.innerHTML = "Like/Dislike Profile"
                     likeDiv.appendChild(likeText)    
-
+                }catch(e){}
 
                     divemail.appendChild(icon)
                     divemail.appendChild(email)

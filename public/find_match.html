@@ -9,8 +9,9 @@
         var cookie = document.cookie
         const params = new URLSearchParams(window.location.search);
         const name = params.get("username");
-        if (name != null) {
-            fetch('http://localhost:3000/get_user_data?username=' + name)
+        const match_name = params.get("matchname");
+        if (match_name != null) {
+            fetch('http://localhost:3000/get_user_data_by_name?username=' + match_name)
                 .then(response => response.json())
                 .then(data => {
                     // Display the received data in the HTML page
