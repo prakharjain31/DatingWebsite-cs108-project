@@ -65,7 +65,7 @@ function intersection(array1, array2) {
 async function readData() {
     // Read the local JSON file
     const login_jsonData = fs.readFileSync('login.json', 'utf-8');
-    const user_jsonData = fs.readFileSync('students2.json', 'utf-8');
+    const user_jsonData = fs.readFileSync('students.json', 'utf-8');
 
     // Parse the JSON data and insert it
     const jsonparseddata = JSON.parse(login_jsonData);
