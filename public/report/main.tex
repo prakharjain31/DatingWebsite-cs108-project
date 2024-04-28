@@ -1,0 +1,489 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{listings}
+\usepackage{minted}
+\usepackage[hidelinks]{hyperref}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codepurple},
+    keywordstyle=\color{NavyBlue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize\bfseries,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=t,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstdefinelanguage{CSS}{
+  keywords={color,background-image:,margin,padding,font,weight,display,position,top,left,right,bottom,list,style,border,size,white,space,min,width, transition:, transform:, transition-property, transition-duration, transition-timing-function},	
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  alsoletter={:},
+  alsodigit={-}
+}
+\lstdefinelanguage{JavaScript}{
+  morekeywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  morecomment=[s]{/*}{*/},
+  morecomment=[l]//,
+  morestring=[b]",
+  morestring=[b]'
+}
+
+\lstset{style=mystyle}
+
+
+\title{HeartSync : Dating Website for IITB Students}
+\author{Prakhar Jain}
+\date{April 2024}
+
+\begin{document}
+
+
+
+\maketitle
+\tableofcontents
+\clearpage
+\section{About the Project}
+
+ This project is part of the course CS-104 in the spring of 2024. It is a dating website which helps users find their right match based on their hobbies and interests. It also implements a like counter and displays a leaderboard based on the number of likes a user has recieved. The website also features a sign up page which allows new users to register seamlessly without having to hardcode user details into the database by hand.
+
+
+The web app is built using \textbf{Node JS} and \textbf{Express JS} as its backend server and it uses \textbf{Mongo DB} to store data. \textbf{Multer} is used as a middleware to store images locally and their path is stored in the database. The front end of the website is made using \textbf{HTML, CSS and Vanilla JS}.
+% \includegraphics[]{photo.jpg}
+\section{Getting Started}
+
+\subsection{Prerequisites}
+
+As this project uses \textbf{Mongo DB}, you need to install Mongo DB on your machine. This can be done by googling Mongo DB and installing the latest version. It is also recommended to install \textbf{Mongo DB Compass} for ease of transition from Basic Tasks to customisation while evaluating.
+
+\subsection{Installation}
+
+To set up the project locally first \textbf{unzip the file} provided or you can clone the repository from github by executing the following command in your terminal.
+
+
+\begin{lstlisting}[language=bash]
+    git clone https://github.com/prakharjain31/DatingWebsite-cs108-project.git
+\end{lstlisting}
+
+After that go into the parent folder and type into the terminal 
+
+\begin{lstlisting}[language=bash]
+    npm install
+    
+\end{lstlisting}
+This will install all the required packages
+
+\subsection{Usage}
+
+To start the server use -
+\begin{lstlisting}[language=bash]
+    node submit.js
+\end{lstlisting}
+Follow the prompts in the console for instructions. To open the website in the browser, go to Google Chrome and open localhost:3000/ or just \href{localhost:3000/}{\textbf{click me}}
+
+IMPORTANT :
+\begin{itemize}
+    \item For checking basic tasks, each functionality is made as written in the Basic Tasks section. Trying to do other features while using the json of basic tasks might cause the app to break. 
+    \item For Running Customisation, first open Mongo DB Compass and delete all the documents for both the login and user databases. Then run \texttt{node submit.js} to start the server.
+\end{itemize}
+
+\section{Basic Tasks}
+Procedure to check basic tasks :
+\begin{itemize}
+    \item Make sure the databases are empty through mongoDB compass
+    \item Load the data into the files \texttt{students.json} and \texttt{login.json}
+    \item Run the server.
+    \item For login part there's the login page, For forgot password there's the forgot password part, For input interface and finding match and output interface there's USE WITHOUT LOGIN, For the scroll part as soon as you login you'll see the list of users.
+\end{itemize}
+At the start \texttt{readData()} function is called. It checks whether the database already contains the data provided in the json files or not. If the database is empty then it uploads data from \texttt{login.json} and \texttt{students.json} into the databases. Otherwise it just proceeds further.
+
+Here is a code snippet of how \texttt{readData()} works :
+\begin{lstlisting}[language=JavaScript]
+    async function readData() {
+    // Read the local JSON file
+    const login_jsonData = fs.readFileSync('login.json', 'utf-8');
+    const user_jsonData = fs.readFileSync('students2.json', 'utf-8');
+
+    // Parse the JSON data and insert it
+    const jsonparseddata = JSON.parse(login_jsonData);
+    const jsonparseddata2 = JSON.parse(user_jsonData);
+    var q = {}
+    var documents = await login_db.collection("users").findOne(q)
+    // console.log(documents)
+    if (documents == null) {
+        try {
+            login_db.collection("users").insertMany(jsonparseddata)
+            console.log("login data entered goodly")
+        }
+        catch {
+            console.log("login couldn't enter data")
+        }
+    }
+    else {
+        console.log("Login db has og data")
+    }
+    var documents = await users_db.collection("users").findOne(q)
+    // console.log(documents)
+    if (documents == null) {
+        try {
+            users_db.collection("users").insertMany(jsonparseddata2)
+            console.log("user data entered goodly")
+        }
+        catch {
+            console.log("user data couldn't enter ")
+        }
+    }
+    else {
+        console.log("user db has og data")
+    }
+}
+\end{lstlisting}
+\subsection{Login Page}
+The first basic task was to create a login page through which users can login using their username and password. The username and password data is stored in login.json file.
+
+For that I first created a basic form in \textbf{login.html} which takes username and password as input and on submitting logs in the user to the website. On submitting a post request is sent to the server through the route '/login'.
+
+The login route works as follows :
+\begin{lstlisting}[language=JavaScript]
+    app.post("/login", async (req, res) => {
+    var usernam = req.body.username
+    var passwor = req.body.password
+    var query = { username: usernam, password: passwor }
+    var d = await login_db.collection("users").findOne(query)
+    // console.log(d)
+    if (d != null) {
+        res.clearCookie("username")
+        res.cookie("username", usernam)
+        return res.redirect("home.html")
+    }
+    else {
+        console.log("Incorrect Username and Password")
+        return res.redirect("login.html")
+    }
+})
+\end{lstlisting}
+\subsection{Forgot Password?}
+Next feature implemented is the forgot password functionality. Suppose a user forgets their password, then they can login into their account by using the \textbf{secret question} and \textbf{secret answer} provided by them during signing up.
+
+The secret question and secret answer are also stored in the login database.
+For this a new \textbf{forgot\_password.html} page is made. This first asks for the username from the user, providing which it sends a get request to get the secret question from the backend and a field to input the secret answer becomes visible. On entering the secret answer, it checks whether it matches the value in the database and responds accordingly.
+
+Here is a code snippet of the fetch/get request
+\begin{lstlisting}[language=JavaScript]
+    <script>
+            // Make a GET request to the server
+            function show_question() {
+                let d = document.getElementById("username")
+                let da = d.value
+                
+                fetch('http://localhost:3000/show_question?username=' + decodeURIComponent(da))
+                .then(response => response.json())
+                .then(data => {
+                    // Display the received data in the HTML page
+                    document.getElementById("secret_question").innerHTML += data.secret_question
+                    document.getElementById("secret_answer").removeAttribute("hidden")
+                    document.getElementById("submit_btn").removeAttribute("hidden")
+                    document.getElementById("show_question").setAttribute("hidden")
+                    })
+                .catch(error => console.error('Error:', error));
+                };
+          </script>
+\end{lstlisting}
+On recieving a response it shows the secret question and answer fields which were hidden initially.
+
+Here is how the \texttt{/login\_with\_question} route works. Its pretty self explanatory
+\begin{lstlisting}[language=javascript]
+    app.post("/login_with_question", async (req, res) => {
+    sa = req.body.secret_answer
+
+    console.log(sa)
+    var doc = await login_db.collection("users").findOne({ secret_answer: sa })
+    if (doc == null) {
+        console.log("Wrong Answer")
+        return res.redirect("signup.html")
+    }
+    else {
+        var usernam = doc.username
+        res.clearCookie("username")
+        res.cookie("username", usernam)
+        res.redirect("home.html")
+    }
+})
+\end{lstlisting}
+\subsection{Scroll list to view all profiles}
+Another feature implemented is the ability to view all profiles in a list. As the user logins, they are redirected to \texttt{home.html} which shows a list of all users on the platform in a concise manner which the user can scroll and view all users.
+
+For this functionality first a get request is sent through the route \texttt{/get\_users} to get the details of all the users. Then we iterate through each user and create a list element corresponding to it.
+
+\begin{lstlisting}[language=javascript]
+    fetch('http://localhost:3000/get_users')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                data.forEach(user => {
+                    var div = document.createElement("div")
+                    div.className = "match"
+                    
+                    var img = document.createElement("img")
+                    img.className = "match__img"
+                    if (user.Photo == null) {
+                        img.src = "images/no_profile_image.jpg"
+                    } else {
+                        img.src = user.Photo
+                    }
+                    var name = document.createElement("p")
+                    name.className = "match__name"
+                    name.innerHTML = user.Name
+                    
+                    var details = document.createElement("div")
+                    details.className = "match__details"
+                   
+                    var age = document.createElement("p")
+                    age.innerHTML = "Age: " + user.Age
+                    details.appendChild(age)
+
+                    var year = document.createElement("p")
+                    year.innerHTML = "Year: " + user["Year of Study"]
+                    details.appendChild(year)
+
+                    var interests = document.createElement("p")
+                    interests.innerHTML = "Interests: " + user.Interests
+                    details.appendChild(interests)
+
+                    var hobbies = document.createElement("p")
+                    hobbies.innerHTML = "Hobbies: " + user.Hobbies
+                    details.appendChild(hobbies)
+
+                    var divemail = document.createElement("div")
+                    divemail.className = "match__email"
+                    
+                    var icon = document.createElement("i")
+                    icon.className = "material-symbols-outlined"
+                    icon.innerHTML = "mail"
+                    
+                    var email = document.createElement("a")
+                    email.href = "mailto:" + user.Email
+                    email.innerHTML = "Contact"
+
+                    
+
+                    divemail.appendChild(icon)
+                    divemail.appendChild(email)
+                    details.appendChild(divemail)
+                    div.appendChild(img)
+                    div.appendChild(name)
+                    div.appendChild(details)
+
+
+                    document.querySelector(".users_list").appendChild(div)
+                })
+            })
+            .catch(error => console.error('Error:', error));
+
+\end{lstlisting}
+\subsection{Input Interface}
+Next I created a special input interface if someone wants to find a right match for them but doesn't want to sign up. For this the user can click on \textbf{Continue without login} and they will be taken to a new page \texttt{find\_match\_no\_login.html}. It provides an input interface using radio buttons and checkboxes. On clicking \textbf{find match} the user can find a match based on their preferences.
+
+\textbf{EXTRA : The input interface also checks for invalid inputs and prompts accordingly to give inputs correctly}
+
+\textbf{The full input interface can be found in the sign up page which can be viewed while viewing customisations}
+\subsection{Finding the Right Match}
+Next an algorithm is implemented which on the basis of your hobbies and interests provides you with the best match for you.
+
+NOTE: This algorithm is proprietary but its use without permission is allowed though
+
+\subsection{Output Interface}
+Next an output interface is made in \texttt{find\_match.html} which displays the right match of the user. Using a get request the details of the right match are received in the front end and displayed through html and css accordingly.
+
+\section{Customisation}
+
+\textbf{IMPORTANT : For this part, change login.json and students.json to the file provided in the zip folder else the app might break in some functionalities. Also if you had used some other scheme of data for basic tasks, go to Mongo DB Compass and connect to the database and delete all the documents such that its an empty database. Then run \texttt{node submit.js} to run the server}
+
+
+OK, so with all the basic tasks done let's move on to the customisation done and functionalities added to the web app.
+\subsection{Sign Up}
+A social media application is incomplete without having the ability to dynamically sign up more users. Hence I made a sign up page which allows new users to sign up and use the website to its full extent.  \\
+
+While signing up the user has the option to provide a their photo. The photo is taken through an HTML form and \textbf{Multer is used to store the image locally} in the \texttt{photos/} folder. Then the path of the image is stored in the database. Hence whenever needed the photo can be shown through the path as the image file is stored locally. 
+
+On clicking Sign up on login.html, it takes the user to \texttt{signup.html} where the user is provided with an \textbf{input interface} to enter all their details to create an account. Here invalid inputs like empty fields, reusing a username etc. are taken care of and relevant prompts are shown to the user.
+\subsection{Likes Meter}
+Next feature implemented is a like/dislike functionality. In this any logged in user, while viewing the list of all users can like/dislike a profile. This is stored in the database. Appropriate UI indications like the icon filling up on liking are also added. If the user logs out and then logs in again later, the system remembers the liked profiles, hence while showing the list of users, the like icon for the already liked users is already filled. Through this duplication of likes does not happen
+
+Also for icons, Google Material Icons are used. Google material icons are a standard library of icons provided for UI development.
+\begin{lstlisting}[language=javascript]
+    var likeDiv = document.createElement("div")
+                    likeDiv.className = "like"
+                    likeDiv.style.marginTop = "20px"
+                    likeDiv.clickable = true
+
+                    var cookie = document.cookie
+                    const currentUserName = cookie.split("=")[1];
+                    // alert(currentUserName)
+                    var likeIcon = document.createElement("i")
+                    if ((user.myLikes).includes(currentUserName)) {
+                        likeIcon.style.cssText = "font-variation-settings: 'FILL' 1;"
+                    }
+                    else {
+                        likeIcon.style.cssText = "font-variation-settings: 'FILL' 0;"
+                    }
+                    likeIcon.className = "material-symbols-outlined"
+                    likeIcon.innerHTML = "favorite"
+
+
+
+                    likeIcon.onclick = function () {
+                        // alert(user.myLikes)
+                        if ((user.myLikes).includes(currentUserName)) {
+                            likeIcon.style.cssText = "font-variation-settings: 'FILL' 0;"
+                            alert("Disliked " + user.Name)
+                            fetch('http://localhost:3000/unlike_user', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    "username": user.username,
+                                    "currentUserName": currentUserName
+                                })
+                            }).then(setTimeout(function () {
+                                location.reload();
+                            }, 500))
+                        }
+                        else {
+                            likeIcon.style.cssText = "font-variation-settings: 'FILL' 1;"
+                            alert("liked " + user.Name)
+                            fetch('http://localhost:3000/like_user', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    "username": user.username,
+                                    "currentUserName": currentUserName
+                                })
+                            }).then(setTimeout(function () {
+                                location.reload();
+                            }, 500))
+                            
+                        }
+
+                    }
+                    likeDiv.appendChild(likeIcon)
+                    likeDiv.style.cssText = "display: flex;justify-content: center;align-items: center;font-size: 1.2em;"
+
+
+                    var likeText = document.createElement("p")
+                    likeText.innerHTML = "Like/Dislike Profile"
+                    likeDiv.appendChild(likeText)    
+
+
+\end{lstlisting}
+
+\subsection{Leaderboard}
+A global leaderboard is also made which shows rankings based on the number of likes a user has recieved. It can be viewed by selecting leaderboard from the top navigation bar in \texttt{home.html}. The front end for leaderboard is present in \texttt{leaderboard.html}
+
+I wont present the code here as it's just a trivial table and its rows added through vanilla js.
+
+\subsection{Contact through Email}
+For the right match an option is provided to email them to contact them and take the talks further (maybe into a relationship if you're lucky)
+This is done by setting the \texttt{href} attribute in the anchor tag to \texttt{mailto:example@email.com}
+
+\subsection{Animations and UI effects to make the UI smooth and fun to use}
+\subsubsection{Floating Labels}
+For input fields, floating labels are added which translate upwards when there's an input in the input fields. \\
+
+\includegraphics[width=350pt]{Screenshot 2024-04-28 at 1.18.11 PM.png}
+\includegraphics[width=350pt]{Screenshot 2024-04-28 at 1.19.21 PM.png}
+
+For this feature the css used was as below, on focus or on a valid input the label transitions upwards giving a smooth floating effect.
+\begin{lstlisting}[language=css]
+     .login .inputbox .label {
+     position: fixed;
+    pointer-events: none; 
+    transition: 150ms
+        cubic-bezier(0.4,0,0.2,1); 
+    transform: translateY(-100%);
+    position: absolute;
+    cursor: text;
+    z-index: 2;
+    top: 50%;
+    left: 5px;
+    font-size: 1.25em;
+    font-weight: bold;
+    background: transparent;
+    padding: 0 1px;
+    color: var(--text-color);
+} 
+.login .inputbox input:focus ~ label{
+    transform: 
+        translateY(-230%)
+        scale(0.7)
+        translateX(-27%);
+    background: rgba(0, 0, 0, 0);
+    padding-inline: 0.3rem;
+}
+.login .inputbox input:valid ~ label {
+    transform: 
+        translateY(-230%)
+        scale(0.7)
+        translateX(-27%);
+    background: rgba(0, 0, 0, 0);
+    padding-inline: 0.3rem;
+}
+\end{lstlisting}
+\subsubsection{Using Material Icons}
+Everywhere icons are used to provide better design for viewing. The icons were imported from the standard Google Material Icons.
+
+\subsubsection{Scale up Images on hovering}
+Another UI feature implemented is scaling up of images on hovering and scaling down when mouse leaves the image element.
+
+\includegraphics[width=350pt]{Screenshot 2024-04-28 at 1.27.43 PM.png}
+\includegraphics[width=350pt]{Screenshot 2024-04-28 at 1.29.10 PM.png}
+
+This feature was implemented by a very basic css code : 
+\begin{lstlisting}[language=css]
+    img:hover {
+            transform: scale(1.5);
+            transition: 0.3s;
+        }
+
+        img {
+            transition: 0.3s;
+        }
+\end{lstlisting}
+\subsubsection{Top Navigation Bar Animation}
+Another animation was highlighting the options in the top navigation bar on hovering over them.
+
+\includegraphics[width=320pt]{Screenshot 2024-04-28 at 1.33.12 PM.png}
+
+\subsection{Audio}
+I also added audio to each website for a soothing user experience 
+
+\subsection{FILTERS while finding right match}
+Another feature added is filters. While finding the right match you can apply filters as to what specific gender you want your match to be. You can also choose one interest or hobby which you want your match to must have.
+This was done in filter.html
+\section{Contact Me}
+Name: Prakhar Jain \\
+IITB Roll No.: 23B0904 \\
+Email: 23B0904@iitb.ac.in \\
+Project link: \href{https://github.com/prakharjain31/DatingWebsite-cs108-project.git}{https://github.com/prakharjain31/DatingWebsite-cs108-project.git}
+
+
+\end{document}
