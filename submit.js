@@ -214,6 +214,9 @@ app.post("/login_with_question", async (req, res) => {
         return res.redirect("signup.html")
     }
     else {
+        var usernam = doc.username
+        res.clearCookie("username")
+        res.cookie("username", usernam)
         res.redirect("home.html")
     }
 

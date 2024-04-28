@@ -6,19 +6,22 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <title>HeartSync</title>
     <style>
+        :root {
+            --text-color : rgb(182, 7, 7);
+        }
         body {
-            background: url("/images/sunset_mountains.jpg");
+            background: url("/images/sunset_mountains2.jpg");
             background-size: cover;
             height: 100vh;
             font-family: sans-serif;
-
-        }
+            margin: 0;
+        }     
 
         .group {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #8f2c24;
+            background-color: rgba(0, 0, 0, 0.3);
             margin: 0;
             padding: 5px;
             height: 50px;
@@ -26,33 +29,40 @@
 
         .group i {
             font-size: 1.5em;
-            color: white;
+            color: var(--text-color);
             margin: 0 10px 0 10px;
         }
 
         .group a {
             font-size: 1.25em;
-            color: white;
+            color: var(--text-color);
             font-weight: 500;
             text-decoration: none;
+            font-weight: bold;
+            /* border-radius: 20px;
+            padding: 10px 20px;
+            transition: 0.5s; */
         }
 
-        .group a:hover {
-            text-decoration: underline;
-        }
+        /* .group a:hover {
+            background: rgb(255, 255, 255);
+        } */
 
-        .logout {
+        .logout, .change-data, .match-a{
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 20px;
+            padding: 10px 20px;
+            transition: 0.5s;
+        }
+        .logout:hover, .change-data:hover, .match-a:hover{
+            background: rgb(255, 255, 255);
         }
 
-        .change-data {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        i:hover {
+            cursor: pointer;
         }
-
 
 
         .material-symbols-outlined {
@@ -67,6 +77,15 @@
                 'FILL' 1,
 
         }
+
+        img:hover {
+            transform: scale(1.5);
+            transition: 0.3s;
+        }
+
+        img {
+            transition: 0.3s;
+        }
     </style>
     <script>
         fetch('http://localhost:3000/get_users')
@@ -76,7 +95,7 @@
                 data.forEach(user => {
                     var div = document.createElement("div")
                     div.className = "match"
-                    div.style.cssText = "color: #8f2c24;font-family: sans-serif;text-align: center;position: relative;padding: 60px;margin: 10px auto;background: rgba(255, 255, 255, 0.3);backdrop-filter: blur(15px);border: 1px solid #ffffff;border-bottom: 1px solid rgba(255, 255, 255, 0.5);border-right: 1px solid rgba(255, 255, 255, 0.5);width:70%;display: flex;flex-direction: column;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);margin: 10px auto;"
+                    div.style.cssText = "color: rgb(150,7,7);font-family: sans-serif;text-align: center;position: relative;padding: 60px;margin: 10px auto;background: rgba(255, 255, 255, 0.05);backdrop-filter: blur(15px);border: 1px solid transparent;border-bottom: 1px solid transparent;border-right: 1px solid transparent;width:70%;display: flex;flex-direction: column;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);margin: 10px auto;"
 
                     var img = document.createElement("img")
                     img.className = "match__img"
@@ -148,7 +167,6 @@
                     likeIcon.onclick = function () {
                         // alert(user.myLikes)
                         if ((user.myLikes).includes(currentUserName)) {
-                            // console.log(22)
                             likeIcon.style.cssText = "font-variation-settings: 'FILL' 0;"
                             alert("Disliked " + user.Name)
                             fetch('http://localhost:3000/unlike_user', {
@@ -163,10 +181,6 @@
                             }).then(setTimeout(function () {
                                 location.reload();
                             }, 500))
-                            // const index = user.myLikes.indexOf(currentUserName);
-                            // if (index > -1) {
-                            //     user.myLikes.splice(index, 1);
-                            // }
                         }
                         else {
                             likeIcon.style.cssText = "font-variation-settings: 'FILL' 1;"
@@ -183,25 +197,9 @@
                             }).then(setTimeout(function () {
                                 location.reload();
                             }, 500))
-                            // user.myLikes.push(currentUserName);
+                            
                         }
 
-                        // fetch('http://localhost:3000/like_user', {
-                        //         method: 'POST',
-                        //         headers: {
-                        //             'Content-Type': 'application/json',
-                        //         },
-                        //         body: JSON.stringify({
-                        //             "username": user.Username
-                        //         })
-                        //     })
-                        //     .then(response => response.json())
-                        //     .then(data => {
-                        //         console.log('Success:', data);
-                        //     })
-                        //     .catch((error) => {
-                        //         console.error('Error:', error);
-                        //     });
                     }
                     likeDiv.appendChild(likeIcon)
                     likeDiv.style.cssText = "display: flex;justify-content: center;align-items: center;font-size: 1.2em;"
@@ -211,31 +209,6 @@
                     likeText.innerHTML = "Like/Dislike Profile"
                     likeDiv.appendChild(likeText)    
 
-                    // var likeIconFill = document.createElement("i")
-                    // likeIconFill.className = "material-symbols-outlined fill"
-                    // likeIconFill.innerHTML = "favorite"
-                    // likeIconFill.setAttribute("hidden", true)
-                    // likeIconFill.onclick = function() {
-                    //     likeIconFill.setAttribute("hidden", true)
-                    //     likeIconEmpty.setAttribute("hidden", false)
-                    //     // fetch('http://localhost:3000/like_user', {
-                    //     //         method: 'POST',
-                    //     //         headers: {
-                    //     //             'Content-Type': 'application/json',
-                    //     //         },
-                    //     //         body: JSON.stringify({
-                    //     //             "username": user.Username
-                    //     //         })
-                    //     //     })
-                    //     //     .then(response => response.json())
-                    //     //     .then(data => {
-                    //     //         console.log('Success:', data);
-                    //     //     })
-                    //     //     .catch((error) => {
-                    //     //         console.error('Error:', error);
-                    //     //     });
-                    // }
-                    // likeDiv.appendChild(likeIconFill)
 
                     divemail.appendChild(icon)
                     divemail.appendChild(email)
@@ -260,7 +233,7 @@
             <i class="material-symbols-outlined" id="logout_icon">logout</i>
             <a href="login.html">LOGOUT</a>
         </div>
-        <a href="find_match.html">FIND YOUR MATCH</a>
+        <a href="find_match.html" class="match-a">FIND YOUR MATCH</a>
         <div class="change-data">
             <i class="material-symbols-outlined">change_circle</i>
             <a href="leaderboard.html">LEADERBOARD</a>

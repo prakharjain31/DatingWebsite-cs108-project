@@ -2,22 +2,46 @@
 <html>
     <head>
         <title>Login to HeartSync</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" >
         <link rel="stylesheet" href="loginpage_style.css">
-        
+        <style>
+            body {
+                height: 100vh;
+            }
+            i {
+                position: absolute;
+                right: 1px;
+                bottom: 45px;
+                color: #540504;
+            }
+            .material-symbols-outlined {
+            font-variation-settings:
+                'wght' 400,
+                'GRAD' 200,
+                'opsz' 40,
+                'FILL' 0;
+        }
+        </style>
     </head>
     <body>
         <section>
-            <img src="images/sunset_mountains.jpg" class="bg">
+            <img src="images/sunset_mountains2.jpg" class="bg">
             <div class="login">
                 <form action="/login" method="POST">
                 <h2>Sign In</h2>
                 <div class="inputbox">
-                    <input class="username" name="username" type="text" placeholder="Username">
-                    <!-- <label class="label" for="username">Username</label> -->
+                    <input class="username" name="username" type="text" required>
+                    <label class="label" for="username">Username</label>
+                    <i class="material-symbols-outlined">
+                        account_circle
+                    </i>
                 </div>
                 <div class="inputbox">
-                    <input class="password" name="password" type="password" placeholder="Password">
-                    <!-- <label class="label" for="password">Password</label> -->
+                    <input class="password" name="password" type="password" required>
+                    <label class="label" for="password">Password</label>
+                    <i class="material-symbols-outlined">
+                        lock
+                    </i>
                 </div>
                 <div class="inputbox">
                     <input id="submit" type="submit" value="LOGIN">
