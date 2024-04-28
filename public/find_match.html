@@ -10,7 +10,18 @@
         const params = new URLSearchParams(window.location.search);
         const name = params.get("username");
         const match_name = params.get("matchname");
-        if (match_name != null) {
+        if (match_name == "blabla") {
+                   alert("NO MATCH FOUND")
+                    document.querySelector(".match__name").innerHTML += "NO MATCH FOUND"
+                    // var mail = document.querySelector(".email_link")
+                    // mail.href = "mailto:" + data.Email
+                    // var link = data.Photo
+                    var img = document.querySelector(".match__img")
+                    // alert(img.src)
+                    img.src = url("/images/no_profie_image.jpg")
+                // alert(img.src)
+                }
+        else if (match_name != null && match_name != "blabla") {
             fetch('http://localhost:3000/get_user_data_by_name?username=' + match_name)
                 .then(response => response.json())
                 .then(data => {
@@ -30,6 +41,7 @@
                     // alert(img.src)
                 })
         }
+        
         else {
             usernam = cookie.trim().split("=")[1]
 
@@ -235,7 +247,7 @@
     </div> -->
 
     <div class="match">
-        <img class="match__img" src="/images/sunset_mountains.jpg" alt="Image not Provided"><br>
+        <img class="match__img" src="/images/no_profile_image.jpg" alt="Image not Provided"><br>
         <div class="match__details">
             <div class="match__name">NAME : </div>
             <div class="match__roll">Roll no. : </div>

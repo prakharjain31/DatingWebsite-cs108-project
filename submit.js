@@ -249,8 +249,30 @@ app.get('/find_match', async (req, res) => {
     var match_user = await users_db.collection("users").findOne({ username: match_usernam })
     // console.log(match_user)
     return res.json(match_user)
-
-
+})
+app.post('/find_match_filter', async (req, res) => {
+    usernam = req.cookies.username
+    var hobby = req.body.hobbies
+    var gender = req.body.gender
+    var interest = req.body.interests
+    var user = await users_db.collection("users").findOne({ username:usernam})
+    var allData = await users_db.collection("users").find({}).toArray()
+    // console.log(user)
+    var match_Name = "blabla"
+    var interest_hobby_match = 0
+    allData.forEach(doc => {
+        // console.log(doc)
+        if ((((intersection(user.Hobbies, doc.Hobbies).length) + ((intersection(user.Interests, doc.Interests).length))) >= interest_hobby_match) && (user.username != doc.username) && ((doc.Interests.includes(interest) || doc.Hobbies.includes(hobby)) && doc.Gender == gender)) {
+            // console.log(doc)
+            interest_hobby_match = ((intersection(user.Hobbies, doc.Hobbies).length) + ((intersection(user.Interests, doc.Interests).length)))
+            match_Name = doc.Name
+            // console.log(match_usernam)
+        }
+    });
+    console.log(match_Name)
+    // var match_user = await users_db.collection("users").findOne({ username: match_usernam })
+    // console.log(match_user)
+    return res.redirect("find_match.html?matchname=" + match_Name)
 })
 
 app.post('/find_match_without_login', async (req, res) => {
