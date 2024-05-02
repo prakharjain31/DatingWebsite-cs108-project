@@ -61,7 +61,10 @@ function intersection(array1, array2) {
     // Create a Set containing elements common to both arrays
     return array2.filter(item => set1.has(item));
 }
-
+async function deleteData() {
+    login_db.collection("users").deleteMany({})
+    users_db.collection("users").deleteMany({})
+}
 async function readData() {
     // Read the local JSON file
     const login_jsonData = fs.readFileSync('login.json', 'utf-8');
@@ -102,6 +105,7 @@ async function readData() {
 }
 
 readData()
+// deleteData()
 
 app.post("/login", async (req, res) => {
     var usernam = req.body.username
